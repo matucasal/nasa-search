@@ -1,0 +1,58 @@
+@import "../../styles/globalvars";
+
+
+.top-header{
+    @include flex(space-between, center, row);
+    min-height: 10vh;
+    flex-wrap: wrap;
+
+    .logo{
+        border: 1px solid red;
+        font-family: 'Play', sans-serif;
+        flex: 0 0 50%;
+        @include flex(flex-start, center, row);
+        h1{
+            margin: 1rem;
+            font-size: 10rem;
+        }
+        img{
+            flex: 0 0;
+            object-fit: cover;
+        }
+    
+    }
+    
+    .actions-header{
+        border: 1px solid blue;
+        flex: 0 1 50%;
+        @include flex(flex-end, center, row);
+        button{
+            border: 1px solid green;
+            margin: 1rem;
+        }
+        
+    
+    }
+}
+
+
+@media screen and (max-width:950px){
+    .top-header{
+        .logo{
+            flex: 0 0 70%;
+            h1{
+                font-size:3rem;
+            }
+        }
+        .actions-header{
+            flex: 0 0 30%;
+        }
+    }
+
+    .account-text{
+        display: none;
+    }
+}
+
+
+
