@@ -10,7 +10,7 @@
     form{
     display: flex;
     flex-direction: row;
-        input{
+        .input-search-query{
             box-sizing: border-box;
             cursor: text;
             display: flex;
@@ -23,18 +23,61 @@
             box-shadow: rgba(4, 17, 29, 0.25) 0px 0px 8px 0px;
             height: 4rem;
         }
-        .search-button {
-            background: transparent;
-            border: none;
-            outline: none;
-            margin-left: -33px;
-        }
+
         
-        .search-button img {
-            width: 20px;
-            height: 20px;
-            object-fit: cover;
+        
+
+        .input-year-start
+        {
+            box-sizing: border-box;
+            cursor: text;
+            display: flex;
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+            border: 1px solid rgb(229, 232, 235);
+            width: 100%;
+            min-width: 10rem;
+            padding: 1rem;
+            box-shadow: rgba(4, 17, 29, 0.25) 0px 0px 8px 0px;
+            height: 4rem;
+            
         }
+        .input-year-end
+        {
+            box-sizing: border-box;
+            cursor: text;
+            display: flex;
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+            border: 1px solid rgb(229, 232, 235);
+            width: 100%;
+            min-width: 8rem;
+            padding: 1rem;
+            box-shadow: rgba(4, 17, 29, 0.25) 0px 0px 8px 0px;
+            height: 4rem;
+        }
+    }
+
+    button{
+        margin-top:2rem;
+        box-sizing: border-box;
+        flex-direction: row;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        display: inline-flex;
+        -webkit-box-align: center;
+        align-items: center;
+        border-radius: 10px;
+        -webkit-box-pack: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 600;
+        padding: 12px 20px;
+        background-color: rgb(24, 104, 183);
+        border: 1px solid rgb(32, 129, 226);
+        transition: all 0.2s ease 0s;
+        box-shadow: rgba(4, 17, 29, 0.25) 0px 0px 8px 0px;
+	    width: 20rem;
     }
 }
 
@@ -42,7 +85,7 @@
 @media screen and (max-width:950px){
     .search{
         form{
-            input{
+            .input-search-query{
                 min-width: 25rem;
             }
         }
