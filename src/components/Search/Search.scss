@@ -3,6 +3,7 @@
 .search{
     @include flex(space-between, center, column);
     min-height: 10vh;
+    margin-top: 5vh;
     width: 95%;
     flex-wrap: wrap;
     
@@ -17,7 +18,7 @@
             border-radius: 10px;
             border: 1px solid rgb(229, 232, 235);
             width: 100%;
-            min-width: 40rem;
+            min-width: 80rem;
             padding: 1rem;
             box-shadow: rgba(4, 17, 29, 0.25) 0px 0px 8px 0px;
             height: 4rem;
@@ -38,11 +39,11 @@
 }
 
 
-@media screen and (max-width:550px){
+@media screen and (max-width:950px){
     .search{
         form{
             input{
-                min-width: 20rem;
+                min-width: 25rem;
             }
         }
     }
