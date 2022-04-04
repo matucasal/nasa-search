@@ -1,6 +1,5 @@
 import './Search.scss';
 import React, { Component } from 'react';
-import Spinner from 'react-bootstrap/Spinner';
 import { useNavigate, createSearchParams } from "react-router-dom";
 
 
@@ -17,7 +16,6 @@ class Search extends Component {
 
     state = {
         results: [],
-        showLoading: false,
         errors: {
             query_seach:'',
             year_start: '',
@@ -118,7 +116,7 @@ class Search extends Component {
             this.state.errors['year_start'] = '';
             this.state.errors['year_end'] = '';
 
-            this.setState({ showLoading: true, errors: this.state.errors });
+            this.setState({ errors: this.state.errors });
             let params =
             {
                 q:this.state.query_seach, 
@@ -192,11 +190,7 @@ class Search extends Component {
                     <button type="submit" form="search-form" value="Submit">Seach</button>
                 </div>
 
-                { this.state.showLoading ? 
-                    <Spinner animation="border" role="status">
-                    </Spinner> 
-                : null 
-                }
+               
                 
             </div>
         );

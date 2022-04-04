@@ -6,6 +6,7 @@ import axios from 'axios';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useSearchParams } from 'react-router-dom';
+import Spinner from 'react-bootstrap/Spinner';
 
 
 const getPreviewFromLinks = (arrObj) => {
@@ -24,7 +25,8 @@ class Results extends Component {
             q: '',
             media_type: '',
             year_start: '',
-            year_end: ''
+            year_end: '',
+            showLoading: false,
         }
     };
     
@@ -68,6 +70,10 @@ class Results extends Component {
     }
 
     getResults(q, media_type,year_start, year_end) {
+        
+        //Put the setloading to true to make the loading animation
+        this.setState({showLoading: true})
+        
         let params = 
         {
             q: q, 
@@ -79,7 +85,7 @@ class Results extends Component {
         axios.get('https://images-api.nasa.gov/search', {params: params})
             .then(res => {
                 const results = res.data
-                this.setState({ results: results});
+                this.setState({ results: results, showLoading: false});
         })
             
     }
@@ -92,6 +98,11 @@ class Results extends Component {
             const resultList = resultsList.collection.items
             return (
                 <div className="search-results">
+                    { this.state.showLoading ? 
+                        <Spinner animation="border" role="status">
+                        </Spinner> 
+                        : null 
+                    }
                     <Row xs={1}>
                         {
                             resultList.map((result) =>
@@ -119,6 +130,11 @@ class Results extends Component {
             return (
             <div className="search-results">
                 There is no results to show.
+                { this.state.showLoading ? 
+                    <Spinner animation="border" role="status">
+                    </Spinner> 
+                    : null 
+                }
             </div>
             );
         }
