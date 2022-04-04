@@ -7,10 +7,8 @@ import Col from 'react-bootstrap/Col';
 
 
 const getPreviewFromLinks = (arrObj) => {
-    console.log('arrObj', arrObj)
     if(arrObj){
         const index = arrObj.map(object => object.rel).indexOf('preview');
-        console.log('arrObj[index]', arrObj[index])
         return arrObj[index].href
     }
     
@@ -32,31 +30,42 @@ class Results extends Component {
     }
 
     render() {
-        const resultList = this.getResults()
+        const resultListProp = this.props.results
         
-        return (
-            <div className="search-results">
-                <Row xs={1}>
-                    {
-                        resultList.map((result) =>
-                            <Col key={result.data[0].nasa_id}  md="auto"> 
-                                <ResultCard 
-                                key={result.data[0].nasa_id} 
-                                title={result.data[0].title} 
-                                description={result.data[0].description}
-                                location={result.data[0].location}
-                                photographer={result.data[0].photographer}
-                                thumbnail={getPreviewFromLinks(result.links)}
-                                />
-                            </Col>
-                        )
-                    }
-                </Row>
-            
-               
+        if(resultListProp){
+            const resultList = resultListProp.collection.items
+            return (
+                <div className="search-results">
+                    <Row xs={1}>
+                        {
+                            resultList.map((result) =>
+                                <Col key={result.data[0].nasa_id}  md="auto"> 
+                                    <ResultCard 
+                                    key={result.data[0].nasa_id} 
+                                    title={result.data[0].title} 
+                                    description={result.data[0].description}
+                                    location={result.data[0].location}
+                                    photographer={result.data[0].photographer}
+                                    thumbnail={getPreviewFromLinks(result.links)}
+                                    />
+                                </Col>
+                            )
+                        }
+                    </Row>
                 
+                   
+                    
+                </div>
+            )
+        }
+        else {
+            return (
+            <div className="search-results">
+                There is no results to show.
             </div>
-        )
+            );
+        }
+        
     }
 }
    

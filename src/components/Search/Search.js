@@ -1,8 +1,18 @@
 import './Search.scss';
 import React, { Component } from 'react';
+import axios from 'axios';
+import Results from './Results'
+import Spinner from 'react-bootstrap/Spinner';
 
 class Search extends Component {
     
+    
+
+    state = {
+        results: [],
+        showLoading: false
+    }
+
     constructor(props) {
         super(props);
 
@@ -20,7 +30,9 @@ class Search extends Component {
 
         this.onHandleQueryChange = this.onHandleQueryChange.bind(this);
         this.onHandleYearChange = this.onHandleYearChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        //this.handleSubmit = this.handleSubmit.bind(this);
+
+        
     }
 
     /*Use this function to get lenght of number*/
@@ -50,11 +62,9 @@ class Search extends Component {
         //If year > this year -> error
         if (year !== '' && year > new Date().getFullYear()){
             this.state.errors[e.target.name] = "Year cannot be after " +  new Date().getFullYear();
-            console.log("Year cannot be after " +  new Date().getFullYear());
         }
         else if (year !== '' && year < 1900){
             this.state.errors[e.target.name] = "Year cannot be before 1900";
-            console.log("Year cannot be before 1900");
         }
         else {
             this.state.errors[e.target.name] = '';
@@ -68,63 +78,79 @@ class Search extends Component {
     };
 
     handleSubmit = event => {
-        alert('Query search: ' + this.state.query_seach);
-        
         event.preventDefault();
+        this.setState({ showLoading: true });
+        axios.get('https://images-api.nasa.gov/search', {params: {q:this.state.query_seach}})
+        .then(res => {
+            const results = res.data
+            this.setState({ results, showLoading: false });
+        })
+
+
     };
     
     render() {
         return (
-            <div className="search">
-                <form id="search-form" onSubmit={this.handleSubmit}>
-                    <input className="input-search-query" 
-                    type="text" 
-                    name="query_seach" 
-                    id="query_seach" 
-                    placeholder="Search"
-                    value = {
-                        this.state.query_seach
-                    }
-                    onChange = {
-                        this.onHandleQueryChange
-                    } 
-                    />
-                    
-                    <div>
-                        <input className="input-year-start" 
+            <div>
+                <div className="search">
+                    <form id="search-form" onSubmit={this.handleSubmit}>
+                        <input className="input-search-query" 
                         type="text" 
-                        name="year_start" 
-                        id="year_start" 
+                        name="query_seach" 
+                        id="query_seach" 
+                        placeholder="Search"
                         value = {
-                            this.state.year_start
-                        } 
-                        placeholder="Year Start" 
-                        onChange = {
-                            this.onHandleYearChange
-                        }/>
-                        <span style={{ color: "red" }}>{this.state.errors["year_start"]}</span>
-                    </div>
-
-                    <div>
-                        <input className="input-year-end" 
-                        type="text" 
-                        name="year_end" 
-                        id="year_end"
-                        value = {
-                            this.state.year_end
-                        } 
-                        placeholder="Year End"
-                        onChange = {
-                            this.onHandleYearChange
+                            this.state.query_seach
                         }
+                        onChange = {
+                            this.onHandleQueryChange
+                        } 
                         />
-                        <span style={{ color: "red" }}>{this.state.errors["year_end"]}</span>
-                    </div>
-                </form>
-                <button type="submit" form="search-form" value="Submit">Seach</button>
+                        
+                        <div>
+                            <input className="input-year-start" 
+                            type="text" 
+                            name="year_start" 
+                            id="year_start" 
+                            value = {
+                                this.state.year_start
+                            } 
+                            placeholder="Year Start" 
+                            onChange = {
+                                this.onHandleYearChange
+                            }/>
+                            <span style={{ color: "red" }}>{this.state.errors["year_start"]}</span>
+                        </div>
+
+                        <div>
+                            <input className="input-year-end" 
+                            type="text" 
+                            name="year_end" 
+                            id="year_end"
+                            value = {
+                                this.state.year_end
+                            } 
+                            placeholder="Year End"
+                            onChange = {
+                                this.onHandleYearChange
+                            }
+                            />
+                            <span style={{ color: "red" }}>{this.state.errors["year_end"]}</span>
+                        </div>
+                    </form>
+                    <button type="submit" form="search-form" value="Submit">Seach</button>
+                </div>
+
+                { this.state.showLoading ? 
+                    <Spinner animation="border" role="status">
+                    </Spinner> 
+                : null 
+                }
+                
+                <Results results={this.state.results}/>
             </div>
         );
     }
    }
    
-   export default Search;
+export default Search;

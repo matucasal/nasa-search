@@ -10,8 +10,7 @@ class ResultCard extends Component {
 
     render() {
 
-        console.log('this.props.thumbnail', this.props.thumbnail)
-
+        
         return (
         
             <Card style={{ width: '25rem', height: '25rem' }} className="card">
@@ -21,10 +20,9 @@ class ResultCard extends Component {
                     <Card.Subtitle className="mb-2 text-muted">Location: { this.props.location || '-'}</Card.Subtitle>
                     <Card.Subtitle className="mb-2 text-muted">Photographer: {this.props.photographer || '-'}</Card.Subtitle>
                     <Card.Text>
-                    {truncate(this.props.description, 100, '...')}
+                    {(this.props.description) ?  truncate(this.props.description, 100, '...'): '-'}
                     </Card.Text>
-                    <Card.Link href="#">Card Link</Card.Link>
-                    <Card.Link href="#">Another Link</Card.Link>
+                    <Card.Link href="#">Show Page</Card.Link>
                 </Card.Body>
             </Card>
         
