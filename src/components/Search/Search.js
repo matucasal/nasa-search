@@ -1,8 +1,10 @@
 import './Search.scss';
 import React, { Component } from 'react';
-import axios from 'axios';
-import Results from './Results'
 import Spinner from 'react-bootstrap/Spinner';
+import { useNavigate, createSearchParams } from "react-router-dom";
+
+
+
 
 const isEmpty = (str) => {
     return (!str || str.length === 0 );
@@ -125,13 +127,14 @@ class Search extends Component {
                 ...(this.state.year_end && {year_end: this.state.year_end}),
             }
 
-            axios.get('https://images-api.nasa.gov/search', {params: params})
-            .then(res => {
-                const results = res.data
-                this.setState({ results, showLoading: false });
-            })
-
+           
+            this.props.navigate({
+                pathname: '/results',
+                search: `?${createSearchParams(params)}`,
+            });
         }
+
+
     };
     
     render() {
@@ -195,11 +198,21 @@ class Search extends Component {
                 : null 
                 }
                 
-                <Results results={this.state.results}/>
             </div>
         );
     }
    }
-   
-export default Search;
+
+
+
+//Export this way to use navigate
+export default (props) => (
+    <Search
+        {...props}
+        navigate={useNavigate()}
+    />
+);
+
+
+
 

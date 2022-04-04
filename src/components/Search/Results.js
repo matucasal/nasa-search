@@ -2,8 +2,10 @@ import ResultCard from './ResultCard';
 import constant from '../../constants/moon.json'
 import React, { Component } from 'react';
 import './Result.scss';
+import axios from 'axios';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { useSearchParams } from 'react-router-dom';
 
 
 const getPreviewFromLinks = (arrObj) => {
@@ -11,29 +13,83 @@ const getPreviewFromLinks = (arrObj) => {
         const index = arrObj.map(object => object.rel).indexOf('preview');
         return arrObj[index].href
     }
-    
 }
-
 
 class Results extends Component {
 
     constructor(props) {
         super(props);
-        this.getResults = this.getResults.bind(this);
+        this.state = {
+            results: [],
+            q: '',
+            media_type: '',
+            year_start: '',
+            year_end: ''
+        }
+    };
+    
+    componentDidUpdate(){
+
+        //const {state} = this.props.location
+        const [searchParams]= this.props.params;
+        
+        console.log('searchParams q updated', searchParams.get('q'))
+        //If searchParams exists
+        if (searchParams){
+            let media_type = searchParams.get('media_type')
+            let q = searchParams.get('q')
+            let year_start = searchParams.get('year_start')
+            let year_end = searchParams.get('year_end')
+
+            //if state params are diffrente from new ones -> i update and print them
+            if (this.state.q !== q || this.state.media_type !== media_type || this.state.year_start !== year_start || this.state.year_end !== year_end) {
+                this.setState({ q: q, media_type: media_type, year_start: year_start, year_end: year_end });
+                this.getResults(q, media_type, year_start, year_end);
+            }
+            
+        }
+        
+
     }
 
-    getResults() {
-        if(constant.collection.items){
-            return constant.collection.items;
+    componentDidMount() {
+        const {searchParams} = this.props.params
+        if (searchParams){
+            let media_type = searchParams.get('media_type')
+            let q = searchParams.get('q')
+            let year_start = searchParams.get('year_start')
+            let year_end = searchParams.get('year_end')
+            
+            this.setState({ q: q, media_type: media_type, year_start: year_start, year_end: year_end });
+            this.getResults(q, media_type,year_start,year_end);
         }
+        
+
+    }
+
+    getResults(q, media_type,year_start, year_end) {
+        let params = 
+        {
+            q: q, 
+            media_type:media_type,
+            ...(year_start && {year_start: year_start}),
+            ...(year_end && {year_end: year_end}),
+        }
+
+        axios.get('https://images-api.nasa.gov/search', {params: params})
+            .then(res => {
+                const results = res.data
+                this.setState({ results: results});
+        })
             
     }
 
     render() {
-        const resultListProp = this.props.results
+        let resultsList = this.state.results
+        console.log('resultsList', resultsList)
         
-        if(resultListProp){
-            const resultList = resultListProp.collection.items
+       if(resultsList.collection){
+            const resultList = resultsList.collection.items
             return (
                 <div className="search-results">
                     <Row xs={1}>
@@ -41,7 +97,8 @@ class Results extends Component {
                             resultList.map((result) =>
                                 <Col key={result.data[0].nasa_id}  md="auto"> 
                                     <ResultCard 
-                                    key={result.data[0].nasa_id} 
+                                    key={result.data[0].nasa_id}
+                                    nasa_id ={result.data[0].nasa_id}
                                     title={result.data[0].title} 
                                     description={result.data[0].description}
                                     location={result.data[0].location}
@@ -69,4 +126,10 @@ class Results extends Component {
     }
 }
    
-export default Results;
+//Export this way to use search params
+export default (props) => (
+    <Results
+        {...props}
+        params={useSearchParams()}
+    />
+);
