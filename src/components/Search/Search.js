@@ -4,13 +4,23 @@ import axios from 'axios';
 import Results from './Results'
 import Spinner from 'react-bootstrap/Spinner';
 
+const isEmpty = (str) => {
+    return (!str || str.length === 0 );
+}
+
+
 class Search extends Component {
     
     
 
     state = {
         results: [],
-        showLoading: false
+        showLoading: false,
+        errors: {
+            query_seach:'',
+            year_start: '',
+            year_end:''
+        },
     }
 
     constructor(props) {
@@ -30,7 +40,7 @@ class Search extends Component {
 
         this.onHandleQueryChange = this.onHandleQueryChange.bind(this);
         this.onHandleYearChange = this.onHandleYearChange.bind(this);
-        //this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
 
         
     }
@@ -73,20 +83,55 @@ class Search extends Component {
         
 
         this.setState({
-            [e.target.name]: year
+            [e.target.name]: year,
+            errors: this.state.errors
         });
     };
 
     handleSubmit = event => {
         event.preventDefault();
-        this.setState({ showLoading: true });
-        axios.get('https://images-api.nasa.gov/search', {params: {q:this.state.query_seach}})
-        .then(res => {
-            const results = res.data
-            this.setState({ results, showLoading: false });
-        })
+        
+        let validation = true
 
+        //Validations
+        //1) Query cannot be empty
+        if (isEmpty(this.state.query_seach)){
+            this.state.errors['query_seach'] = "The query cannot be empty";
+            //console.log('this.state.errors["query_seach"]',this.state.errors["query_seach"])
+            this.setState({ errors: this.state.errors });
+            validation = false
+        }
+        //2) Validate the year end not < than year start
+        if (this.state.year_end < this.state.year_start ){
+            this.state.errors['year_start'] = "The start year cannot be bigger than the end year";
+            //console.log('this.state.errors["query_seach"]',this.state.errors["query_seach"])
+            this.setState({ errors: this.state.errors });
+            validation = false
+        }
+        
+        //Validations where ok
+        if (validation){
+            //Set errors to null
+            this.state.errors['query_seach'] = '';
+            this.state.errors['year_start'] = '';
+            this.state.errors['year_end'] = '';
 
+            this.setState({ showLoading: true, errors: this.state.errors });
+            let params =
+            {
+                q:this.state.query_seach, 
+                media_type:'image',
+                ...(this.state.year_start && {year_start: this.state.year_start}),
+                ...(this.state.year_end && {year_end: this.state.year_end}),
+            }
+
+            axios.get('https://images-api.nasa.gov/search', {params: params})
+            .then(res => {
+                const results = res.data
+                this.setState({ results, showLoading: false });
+            })
+
+        }
     };
     
     render() {
@@ -94,19 +139,22 @@ class Search extends Component {
             <div>
                 <div className="search">
                     <form id="search-form" onSubmit={this.handleSubmit}>
-                        <input className="input-search-query" 
-                        type="text" 
-                        name="query_seach" 
-                        id="query_seach" 
-                        placeholder="Search"
-                        value = {
-                            this.state.query_seach
-                        }
-                        onChange = {
-                            this.onHandleQueryChange
-                        } 
-                        />
-                        
+                        <div>
+                            <input className="input-search-query" 
+                            type="text" 
+                            name="query_seach" 
+                            id="query_seach" 
+                            placeholder="Search"
+                            value = {
+                                this.state.query_seach
+                            }
+                            onChange = {
+                                this.onHandleQueryChange
+                            } 
+                            />
+                            <span style={{ color: "red" }}>{this.state.errors["query_seach"]}</span>
+                            
+                        </div>
                         <div>
                             <input className="input-year-start" 
                             type="text" 
@@ -154,3 +202,4 @@ class Search extends Component {
    }
    
 export default Search;
+

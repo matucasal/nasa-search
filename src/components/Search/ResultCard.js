@@ -17,8 +17,6 @@ class ResultCard extends Component {
                 <Card.Img variant="top" className="card-image" src={this.props.thumbnail}  />
                 <Card.Body>
                     <Card.Title>{this.props.title}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">Location: { this.props.location || '-'}</Card.Subtitle>
-                    <Card.Subtitle className="mb-2 text-muted">Photographer: {this.props.photographer || '-'}</Card.Subtitle>
                     <Card.Text>
                     {(this.props.description) ?  truncate(this.props.description, 100, '...'): '-'}
                     </Card.Text>
