@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,KAAK,CAAA;EACD,UAAU,EAAE,IAAI;EAChB,YAAY,EAAE,IAAI;EAQlB,SAAS,EAAE,MAAM;CAIpB;;AAdD,AAGI,KAHC,CAGD,WAAW,CACX;EACI,WAAW,EAAE,IAAI;EACjB,YAAY,EAAE,IAAI;EAClB,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,KAAK;CAChB;;AATL,AAWI,KAXC,CAWD,WAAW,CAAA;EACP,SAAS,EAAE,MAAM;CACpB",
+    "sources": [
+        "ResultCard.scss"
+    ],
+    "names": [],
+    "file": "ResultCard.css"
+}

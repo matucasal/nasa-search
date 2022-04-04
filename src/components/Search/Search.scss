@@ -8,8 +8,9 @@
     flex-wrap: wrap;
     
     form{
-    display: flex;
-    flex-direction: row;
+        display: flex;
+        flex-direction: row;
+        margin-left: 1rem;
         .input-search-query{
             box-sizing: border-box;
             cursor: text;
@@ -82,11 +83,34 @@
 }
 
 
-@media screen and (max-width:950px){
+@media screen and (max-width:950px) and (min-width:300px){
     .search{
         form{
             .input-search-query{
                 min-width: 25rem;
+            }
+            .input-year-start{
+                min-width: 5rem;
+            }
+            .input-year-end{
+                min-width: 5rem;
+            }
+        }
+    }
+}
+
+
+@media screen and (max-width:300px){
+    .search{
+        form{
+            .input-search-query{
+                min-width: 25rem;
+            }
+            .input-year-start{
+                display:none;
+            }
+            .input-year-end{
+                display:none;
             }
         }
     }

@@ -1,0 +1,17 @@
+.card {
+  margin-top: 1rem;
+  margin-right: 1rem;
+  font-size: 1.2rem;
+}
+
+.card .card-image {
+  margin-left: auto;
+  margin-right: auto;
+  width: 10rem;
+  height: 10rem;
+}
+
+.card .text-muted {
+  font-size: 1.2rem;
+}
+/*# sourceMappingURL=ResultCard.css.map */

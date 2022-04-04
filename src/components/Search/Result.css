@@ -1,0 +1,13 @@
+.search-results {
+  margin-top: 5vh;
+  width: 95%;
+  margin-left: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .search-results {
+    width: 95%;
+    margin-left: 15%;
+  }
+}
+/*# sourceMappingURL=Result.css.map */

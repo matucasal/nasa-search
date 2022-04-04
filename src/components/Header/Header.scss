@@ -4,6 +4,7 @@
 .top-header{
     @include flex(space-between, center, row);
     min-height: 10vh;
+    width: 95%;
     flex-wrap: wrap;
 
     .logo{
@@ -15,6 +16,7 @@
             font-size: 6rem;
         }
         img{
+            margin-left: 1rem;
             flex: 0 0;
             object-fit: cover;
         }
