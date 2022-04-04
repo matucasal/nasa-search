@@ -1,5 +1,4 @@
 import ResultCard from './ResultCard';
-import constant from '../../constants/moon.json'
 import React, { Component } from 'react';
 import './Result.scss';
 import axios from 'axios';
@@ -32,10 +31,8 @@ class Results extends Component {
     
     componentDidUpdate(){
 
-        //const {state} = this.props.location
         const [searchParams]= this.props.params;
         
-        console.log('searchParams q updated', searchParams.get('q'))
         //If searchParams exists
         if (searchParams){
             let media_type = searchParams.get('media_type')
@@ -55,7 +52,7 @@ class Results extends Component {
     }
 
     componentDidMount() {
-        const {searchParams} = this.props.params
+        const [searchParams] = this.props.params
         if (searchParams){
             let media_type = searchParams.get('media_type')
             let q = searchParams.get('q')
@@ -72,7 +69,8 @@ class Results extends Component {
     getResults(q, media_type,year_start, year_end) {
         
         //Put the setloading to true to make the loading animation
-        this.setState({showLoading: true})
+        if (q)
+            this.setState({showLoading: true})
         
         let params = 
         {

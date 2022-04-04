@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import './ResultCard.scss'
+import { useNavigate } from "react-router-dom";
 
 
 const truncate = (str, max, suffix) => str.length < max ? str : `${str.substr(0, str.substr(0, max - suffix.length).lastIndexOf(' '))}${suffix}`;
@@ -15,6 +16,10 @@ class ResultCard extends Component {
 
     showPage (nasa_id) {
         console.log("I should go to nasa_id", nasa_id)
+        this.props.navigate({
+            pathname: '/show',
+            search: `?nasa_id=${nasa_id}`,
+        });
     }
 
     render() {
@@ -45,4 +50,10 @@ class ResultCard extends Component {
     }
 }
    
-export default ResultCard;
+//Export this way to use navigate
+export default (props) => (
+    <ResultCard
+        {...props}
+        navigate={useNavigate()}
+    />
+);

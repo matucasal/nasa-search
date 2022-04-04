@@ -125,6 +125,7 @@ class Search extends Component {
                 ...(this.state.year_end && {year_end: this.state.year_end}),
             }
 
+            console.log('params query input', params)
            
             this.props.navigate({
                 pathname: '/results',
