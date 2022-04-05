@@ -5,6 +5,7 @@ import { useNavigate, createSearchParams } from "react-router-dom";
 
 
 
+
 const isEmpty = (str) => {
     return (!str || str.length === 0 );
 }
@@ -222,7 +223,7 @@ class Search extends Component {
                             }
                         </div>
                     </form>
-                    <button type="submit" form="search-form" value="Submit">Seach</button>
+                    <button type="submit" form="search-form" value="Submit">Search</button>
                 </div>
 
                

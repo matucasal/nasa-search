@@ -114,16 +114,16 @@ class ShowPage extends Component {
         return (
             <div className="show-page">
                 <button
-                className="button icon-left"
+                className="button"
                 onClick={() => this.props.navigate(-1) }>
                     Go Back
                 </button>
                 
                 <div className="show-page-title">
                     <h1>{this.state.name}</h1>
-                    <h3>Photographer: {this.state.photographer}</h3>
-                    <h3>Date: {this.state.date_created}</h3>
-                    <h3>Location: {this.state.location}</h3>
+                    <h3>Photographer: {(this.state.photographer) ? this.state.photographer : '-'}</h3>
+                    <h3>Date: {(this.state.date_created) ? this.state.date_created : '-'}</h3>
+                    <h3>Location: {(this.state.location) ? this.state.location : '-'}</h3>
                 </div>
                 <hr className="rounded"></hr>
                 <div className="show-page-images">

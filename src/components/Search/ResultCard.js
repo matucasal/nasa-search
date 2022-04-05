@@ -29,7 +29,7 @@ class ResultCard extends Component {
             <Card style={{ width: '25rem', height: '25rem' }} className="card">
                 <Card.Img variant="top" className="card-image" src={this.props.thumbnail}  />
                 <Card.Body className="text-center">
-                    <Card.Title>{this.props.title}</Card.Title>
+                    <Card.Title>{(this.props.title) ?  truncate(this.props.title, 50, '...'): '-'}</Card.Title>
                     <Card.Text>
                     {(this.props.description) ?  truncate(this.props.description, 100, '...'): '-'}
                     </Card.Text>
