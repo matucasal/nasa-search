@@ -1,30 +1,27 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-
-
 const LEFT_PAGE = 'LEFT';
 const RIGHT_PAGE = 'RIGHT';
-
 
 /**
  * Helper method for creating a range of numbers
  * range(1, 5) => [1, 2, 3, 4, 5]
  */
- const range = (from, to, step = 1) => {
-    let i = from;
-    const range = [];
-  
-    while (i <= to) {
-      range.push(i);
-      i += step;
-    }
-  
-    return range;
+const range = (from, to, step = 1) => {
+  let i = from;
+  const range = [];
+
+  while (i <= to) {
+    range.push(i);
+    i += step;
   }
 
+  return range;
+}
 
 class Pagination extends Component {
+
   constructor(props) {
     super(props);
     const { totalRecords = null, pageLimit = 30, pageNeighbours = 0 } = props;
@@ -39,11 +36,68 @@ class Pagination extends Component {
 
     this.totalPages = Math.ceil(this.totalRecords / this.pageLimit);
 
-    this.state = { currentPage: 1 };
+    this.state = { currentPage: 1, pagesToPaginate: [] };
   }
 
+  componentDidMount() {
+    this.setState({pagesToPaginate: this.fetchPageNumbers()} )
+    this.gotoPage(1);
+  }
 
-/**
+  componentDidUpdate(prevProps) {
+    if (prevProps.totalRecords !== this.props.totalRecords) {
+        
+        //this.gotoPage(1);
+        
+        // I replicate everhing of the constructor
+        this.pageLimit = typeof this.props.pageLimit === 'number' ? this.props.pageLimit : 30;
+        this.totalRecords = typeof this.props.totalRecords === 'number' ? this.props.totalRecords : 0;
+
+        // pageNeighbours can be: 0, 1 or 2
+        this.pageNeighbours = typeof this.props.pageNeighbours === 'number'
+        ? Math.max(0, Math.min(this.props.pageNeighbours, 2))
+        : 0;
+
+        this.totalPages = Math.ceil(this.totalRecords / this.pageLimit);
+
+        // End replicate everhing of the constructor
+        this.setState({pagesToPaginate: this.fetchPageNumbers()} )
+    
+    }
+}
+    
+
+  gotoPage = page => {
+    const { onPageChanged = f => f } = this.props;
+
+    const currentPage = Math.max(0, Math.min(page, this.totalPages));
+
+    const paginationData = {
+      currentPage,
+      totalPages: this.totalPages,
+      pageLimit: this.pageLimit,
+      totalRecords: this.totalRecords
+    };
+
+    this.setState({ currentPage }, () => onPageChanged(paginationData));
+  }
+
+  handleClick = page => evt => {
+    evt.preventDefault();
+    this.gotoPage(page);
+  }
+
+  handleMoveLeft = evt => {
+    evt.preventDefault();
+    this.gotoPage(this.state.currentPage - (this.pageNeighbours * 2) - 1);
+  }
+
+  handleMoveRight = evt => {
+    evt.preventDefault();
+    this.gotoPage(this.state.currentPage + (this.pageNeighbours * 2) + 1);
+  }
+
+  /**
    * Let's say we have 10 pages and we set pageNeighbours to 2
    * Given that the current page is 6
    * The pagination control will look like the following:
@@ -54,7 +108,8 @@ class Pagination extends Component {
    * [x] => represents current page
    * {...x} => represents page neighbours
    */
- fetchPageNumbers = () => {
+  fetchPageNumbers = () => {
+
     const totalPages = this.totalPages;
     const currentPage = this.state.currentPage;
     const pageNeighbours = this.pageNeighbours;
@@ -67,8 +122,10 @@ class Pagination extends Component {
     const totalBlocks = totalNumbers + 2;
 
     if (totalPages > totalBlocks) {
+
       const startPage = Math.max(2, currentPage - pageNeighbours);
       const endPage = Math.min(totalPages - 1, currentPage + pageNeighbours);
+
       let pages = range(startPage, endPage);
 
       /**
@@ -104,17 +161,21 @@ class Pagination extends Component {
       }
 
       return [1, ...pages, totalPages];
+
     }
 
     return range(1, totalPages);
+
   }
 
-
   render() {
+
     if (!this.totalRecords || this.totalPages === 1) return null;
 
     const { currentPage } = this.state;
-    const pages = this.fetchPageNumbers();
+    //const pages = this.fetchPageNumbers();
+    console.log('this.state.pagesToPaginate;', this.state.pagesToPaginate)
+    const pages = this.state.pagesToPaginate;
 
     return (
       <Fragment>
@@ -152,41 +213,8 @@ class Pagination extends Component {
         </nav>
       </Fragment>
     );
+
   }
-
-  componentDidMount() {
-    this.gotoPage(1);
-  }
-
-  gotoPage = page => {
-    const { onPageChanged = f => f } = this.props;
-    const currentPage = Math.max(0, Math.min(page, this.totalPages));
-    const paginationData = {
-      currentPage,
-      totalPages: this.totalPages,
-      pageLimit: this.pageLimit,
-      totalRecords: this.totalRecords
-    };
-
-    this.setState({ currentPage }, () => onPageChanged(paginationData));
-  }
-
-  handleClick = page => evt => {
-    evt.preventDefault();
-    this.gotoPage(page);
-  }
-
-  handleMoveLeft = evt => {
-    evt.preventDefault();
-    this.gotoPage(this.state.currentPage - (this.pageNeighbours * 2) - 1);
-  }
-
-  handleMoveRight = evt => {
-    evt.preventDefault();
-    this.gotoPage(this.state.currentPage + (this.pageNeighbours * 2) + 1);
-  }
-
-
 }
 
 Pagination.propTypes = {
@@ -197,5 +225,3 @@ Pagination.propTypes = {
 };
 
 export default Pagination;
-
-

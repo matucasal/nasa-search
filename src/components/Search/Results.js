@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useSearchParams } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
+import Pagination from '../Utils/Pagination'
 
 
 const getPreviewFromLinks = (arrObj) => {
@@ -21,6 +22,10 @@ class Results extends Component {
         super(props);
         this.state = {
             results: [],
+            currentResults: [],
+            currentPage: null, 
+            totalPages: null,
+            totalRecords:0,
             q: '',
             media_type: '',
             year_start: '',
@@ -44,7 +49,7 @@ class Results extends Component {
                 //if state params are diffrente from new ones -> i update and print them
                 if (this.state.q !== q || this.state.media_type !== media_type || this.state.year_start !== year_start || this.state.year_end !== year_end) {
                     this.setState({ q: q, media_type: media_type, year_start: year_start, year_end: year_end });
-                    this.getResults(q, media_type, year_start, year_end);
+                    this.getResults(q, media_type, year_start, year_end, 1);
                 }
             }
             
@@ -63,7 +68,7 @@ class Results extends Component {
             let year_end = searchParams.get('year_end')
             if(q && media_type){
                 this.setState({ q: q, media_type: media_type, year_start: year_start, year_end: year_end });
-                this.getResults(q, media_type,year_start,year_end);
+                this.getResults(q, media_type,year_start,year_end, 1);
             }
             
         }
@@ -71,7 +76,17 @@ class Results extends Component {
 
     }
 
-    getResults(q, media_type,year_start, year_end) {
+    onPageChanged = data => {
+        const { results } = this.state;
+        const { currentPage, totalPages, pageLimit } = data;
+        //const offset = (currentPage - 1) * pageLimit;
+        //const currentResults = results.slice(offset, offset + pageLimit);
+        this.getResults(this.state.q, this.state.media_type,this.state.year_start,this.state.year_end, currentPage);
+        
+        this.setState({ currentPage});
+    }
+
+    getResults(q, media_type,year_start, year_end, page) {
         
         //Put the setloading to true to make the loading animation
         if (q)
@@ -83,12 +98,14 @@ class Results extends Component {
             media_type:media_type,
             ...(year_start && {year_start: year_start}),
             ...(year_end && {year_end: year_end}),
+            page: page 
         }
 
+        //${currentPage}&limit=${pageLimit}
         axios.get('https://images-api.nasa.gov/search', {params: params})
             .then(res => {
                 const results = res.data
-                this.setState({ results: results, showLoading: false});
+                this.setState({ currentResults: results, currentPage: page, results: results, showLoading: false, totalRecords: results.collection.metadata.total_hits});
         })
             
     }
@@ -97,6 +114,7 @@ class Results extends Component {
         let resultsList = this.state.results
         
         if(resultsList.collection){
+            console.log('resultsList.collection.metadata', resultsList.collection.metadata)
             const resultList = resultsList.collection.items
             return (
                 <div className="search-results">
@@ -105,6 +123,14 @@ class Results extends Component {
                         </Spinner> 
                         : null 
                     }
+
+                    { (this.state.totalRecords) ? (
+                        <div className="d-flex flex-row py-4 align-items-center">
+                            <Pagination totalRecords={this.state.totalRecords} pageLimit={100} pageNeighbours={1} onPageChanged={this.onPageChanged} />
+                        </div>
+                    ) : ('')
+                    }
+
                     <Row xs={1}>
                         {
                             resultList.map((result) =>
@@ -122,8 +148,7 @@ class Results extends Component {
                             )
                         }
                     </Row>
-                
-                   
+
                     
                 </div>
             )
