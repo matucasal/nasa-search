@@ -15,12 +15,8 @@ API docs: https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf
 # Libraries
 
 - I used bootstrap for organizing the results from the query.
-
 - I used axios to get the API.
-
--
-
-- I took the pagination concept from here -> https://www.digitalocean.com/community/tutorials/how-to-build-custom-pagination-with-react-es
+- I took the pagination concept from here -> https://www.digitalocean.com/community/tutorials/how-to-build-custom-pagination-with-react-es -> I added some logic to refresh the pagination.
 
 
 # Requirements
