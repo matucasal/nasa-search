@@ -1,3 +1,11 @@
+# How to deploy it
+
+- After the git pull, you should install the packages with ´npm install´
+- To run the app you should run ´npm start´ -> This should deploy a localhost:3000 with the app
+- To run the tests you should run ´npm test´
+
+
+
 NASA has revealed a public API for the image collection. We would like to explore the content
 using the client side application.
 API docs: https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf
