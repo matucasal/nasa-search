@@ -20,10 +20,7 @@ What to test ->
     1) Render the right screen
     2) Inputs -> Form Validation
     3) Test the props recieved by the search in the results page
-    4) Test the states of the results page
-    5) Test loading in the results page
-    6) Select an item try to enter the show page
-    7) Array manipulation for images in the show page
+    4) Array manipulation for images in the show page
 */
 
 
@@ -57,9 +54,6 @@ jest.mock('react-router-dom', () => ({
 
 
 //2) Inputs -> Form Validation
-//3) Test the props recieved by the search in the results page
-//4) Test the states of the results page
-//5) Test loading in the results page
 describe("Testing Search", () => {
  
     test('search input exists and correct type', () => {
@@ -122,6 +116,12 @@ describe("Testing Search", () => {
         expect(screen.queryByTestId("query-search-error-msg")).not.toBeInTheDocument();
     })
 
-    test ('The props in the results page are recieved correctly when submit search', () => {})
+})
 
+
+
+//3) Test the params recieved by the search in the results page
+describe("Testing Results", () => {
+    test ('The params in the results page are recieved correctly', () => {
+    })
 })
