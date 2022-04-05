@@ -70,22 +70,32 @@ class Search extends Component {
         }
 
         //If year > this year -> error
-        if (year !== '' && year > new Date().getFullYear()){
-            this.state.errors[e.target.name] = "Year cannot be after " +  new Date().getFullYear();
+       if (year !== '' && year > new Date().getFullYear()){
+            this.setState(prevState => {
+                let errors = Object.assign({}, prevState.errors);
+                errors[e.target.name] = 'Year cannot be after ' +  new Date().getFullYear();      
+                return { errors };
+            })
         }
         else if (year !== '' && year < 1900){
-            this.state.errors[e.target.name] = "Year cannot be before 1900";
+            this.setState(prevState => {
+                let errors = Object.assign({}, prevState.errors);
+                errors[e.target.name] = "Year cannot be before 1900";      
+                return { errors };
+            })
         }
         else {
-            this.state.errors[e.target.name] = '';
+            this.setState(prevState => {
+                let errors = Object.assign({}, prevState.errors);
+                errors[e.target.name] = '';      
+                return { errors };
+            })
         }
-
-        
 
         this.setState({
             [e.target.name]: year,
-            errors: this.state.errors
         });
+
     };
 
     handleSubmit = event => {
@@ -96,27 +106,44 @@ class Search extends Component {
         //Validations
         //1) Query cannot be empty
         if (isEmpty(this.state.query_seach)){
-            this.state.errors['query_seach'] = "The query cannot be empty";
+            //this.state.errors['query_seach'] = "The query cannot be empty";
+            this.setState(prevState => {
+                let errors = Object.assign({}, prevState.errors);
+                errors['query_seach'] = "The query cannot be empty";      
+                return { errors };
+            })
             //console.log('this.state.errors["query_seach"]',this.state.errors["query_seach"])
-            this.setState({ errors: this.state.errors });
+            //this.setState({ errors: this.state.errors });
             validation = false
         }
         //2) Validate the year end not < than year start
-        if (this.state.year_end < this.state.year_start ){
-            this.state.errors['year_start'] = "Wrong years";
+        if (this.state.year_end && (this.state.year_end < this.state.year_start) ){
+            //this.state.errors['year_start'] = "Wrong years";
+            this.setState(prevState => {
+                let errors = Object.assign({}, prevState.errors);
+                errors['year_start'] = "Wrong years";      
+                return { errors };
+            })
             //console.log('this.state.errors["query_seach"]',this.state.errors["query_seach"])
-            this.setState({ errors: this.state.errors });
+            //this.setState({ errors: this.state.errors });
             validation = false
         }
         
         //Validations where ok
         if (validation){
             //Set errors to null
-            this.state.errors['query_seach'] = '';
+            this.setState(prevState => {
+                let errors = Object.assign({});
+                errors['query_search'] = '';      
+                errors['year_end'] = '';      
+                errors['year_start'] = '';      
+                return { errors };
+            })
+            /*this.state.errors['query_seach'] = '';
             this.state.errors['year_start'] = '';
             this.state.errors['year_end'] = '';
 
-            this.setState({ errors: this.state.errors });
+            this.setState({ errors: this.state.errors });*/
             let params =
             {
                 q:this.state.query_seach, 
@@ -155,8 +182,10 @@ class Search extends Component {
                                 this.onHandleQueryChange
                             } 
                             />
-                            <span style={{ color: "red" }} data-testid="query-search-error-msg">{this.state.errors["query_seach"]}</span>
-                            
+                            {(this.state.errors["query_seach"]) ?
+                                (<span style={{ color: "red" }} data-testid="query-search-error-msg">{this.state.errors["query_seach"]}</span>)
+                                : ('')
+                            }
                         </div>
                         <div>
                             <input className="input-year-start" 
@@ -193,7 +222,10 @@ class Search extends Component {
                                 this.onHandleYearChange
                             }
                             />
-                            <span style={{ color: "red" }} data-testid="year-end-error-msg">{this.state.errors["year_end"]}</span>
+                            {(this.state.errors["year_end"]) ? 
+                            (<span style={{ color: "red" }} data-testid="year-end-error-msg">{this.state.errors["year_end"]}</span>)
+                            : ('')
+                            }
                         </div>
                     </form>
                     <button type="submit" form="search-form" value="Submit">Seach</button>
