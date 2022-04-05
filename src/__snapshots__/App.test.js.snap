@@ -1,0 +1,140 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly the app 1`] = `
+<div
+  className="App"
+>
+  <div>
+    <header>
+      <div
+        className="top-header"
+      >
+        <div
+          className="logo"
+        >
+          <img
+            alt="nasa-logo"
+            src="NASA_logo.png"
+          />
+          <h1>
+            NASA SEARCH
+          </h1>
+        </div>
+        <div
+          className="actions-header"
+        >
+          <button
+            className="btn btn-outline-secondary"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              className="account-icon"
+              fill="currentColor"
+              height="1em"
+              viewBox="0 0 16 16"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"
+              />
+            </svg>
+             
+            <span
+              className="account-text"
+            >
+              My Account
+            </span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <div>
+      <div>
+        <div
+          className="search"
+        >
+          <form
+            id="search-form"
+            onSubmit={[Function]}
+          >
+            <div>
+              <input
+                className="input-search-query"
+                data-testid="search-input"
+                id="query_seach"
+                name="query_seach"
+                onChange={[Function]}
+                placeholder="Search"
+                type="text"
+                value=""
+              />
+              <span
+                data-testid="query-search-error-msg"
+                style={
+                  Object {
+                    "color": "red",
+                  }
+                }
+              />
+            </div>
+            <div>
+              <input
+                className="input-year-start"
+                data-testid="year-start-input"
+                id="year_start"
+                name="year_start"
+                onChange={[Function]}
+                placeholder="Year Start"
+                type="text"
+                value=""
+              />
+            </div>
+            <div>
+              <input
+                className="input-year-end"
+                data-testid="year-end-input"
+                id="year_end"
+                name="year_end"
+                onChange={[Function]}
+                placeholder="Year End"
+                type="text"
+                value=""
+              />
+              <span
+                data-testid="year-end-error-msg"
+                style={
+                  Object {
+                    "color": "red",
+                  }
+                }
+              />
+            </div>
+          </form>
+          <button
+            form="search-form"
+            type="submit"
+            value="Submit"
+          >
+            Seach
+          </button>
+        </div>
+      </div>
+      <hr
+        className="rounded"
+      />
+    </div>
+    <div
+      className="content"
+    >
+      <div
+        className="search-results"
+      >
+        There are no results to show.
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -40,11 +40,14 @@ class Results extends Component {
             let year_start = searchParams.get('year_start')
             let year_end = searchParams.get('year_end')
 
-            //if state params are diffrente from new ones -> i update and print them
-            if (this.state.q !== q || this.state.media_type !== media_type || this.state.year_start !== year_start || this.state.year_end !== year_end) {
-                this.setState({ q: q, media_type: media_type, year_start: year_start, year_end: year_end });
-                this.getResults(q, media_type, year_start, year_end);
+            if(q && media_type){
+                //if state params are diffrente from new ones -> i update and print them
+                if (this.state.q !== q || this.state.media_type !== media_type || this.state.year_start !== year_start || this.state.year_end !== year_end) {
+                    this.setState({ q: q, media_type: media_type, year_start: year_start, year_end: year_end });
+                    this.getResults(q, media_type, year_start, year_end);
+                }
             }
+            
             
         }
         
@@ -58,9 +61,11 @@ class Results extends Component {
             let q = searchParams.get('q')
             let year_start = searchParams.get('year_start')
             let year_end = searchParams.get('year_end')
+            if(q && media_type){
+                this.setState({ q: q, media_type: media_type, year_start: year_start, year_end: year_end });
+                this.getResults(q, media_type,year_start,year_end);
+            }
             
-            this.setState({ q: q, media_type: media_type, year_start: year_start, year_end: year_end });
-            this.getResults(q, media_type,year_start,year_end);
         }
         
 
@@ -90,9 +95,8 @@ class Results extends Component {
 
     render() {
         let resultsList = this.state.results
-        console.log('resultsList', resultsList)
         
-       if(resultsList.collection){
+        if(resultsList.collection){
             const resultList = resultsList.collection.items
             return (
                 <div className="search-results">

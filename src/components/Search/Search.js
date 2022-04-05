@@ -103,7 +103,7 @@ class Search extends Component {
         }
         //2) Validate the year end not < than year start
         if (this.state.year_end < this.state.year_start ){
-            this.state.errors['year_start'] = "The start year cannot be bigger than the end year";
+            this.state.errors['year_start'] = "Wrong years";
             //console.log('this.state.errors["query_seach"]',this.state.errors["query_seach"])
             this.setState({ errors: this.state.errors });
             validation = false
@@ -147,6 +147,7 @@ class Search extends Component {
                             name="query_seach" 
                             id="query_seach" 
                             placeholder="Search"
+                            data-testid="search-input"
                             value = {
                                 this.state.query_seach
                             }
@@ -154,7 +155,7 @@ class Search extends Component {
                                 this.onHandleQueryChange
                             } 
                             />
-                            <span style={{ color: "red" }}>{this.state.errors["query_seach"]}</span>
+                            <span style={{ color: "red" }} data-testid="query-search-error-msg">{this.state.errors["query_seach"]}</span>
                             
                         </div>
                         <div>
@@ -166,10 +167,16 @@ class Search extends Component {
                                 this.state.year_start
                             } 
                             placeholder="Year Start" 
+                            data-testid="year-start-input"
                             onChange = {
                                 this.onHandleYearChange
                             }/>
-                            <span style={{ color: "red" }}>{this.state.errors["year_start"]}</span>
+                            {
+                                this.state.errors["year_start"] ? (
+                                    <span style={{ color: "red" }} data-testid="year-start-error-msg">{this.state.errors["year_start"]}</span>
+                                ) :
+                                ('')
+                            }
                         </div>
 
                         <div>
@@ -177,6 +184,7 @@ class Search extends Component {
                             type="text" 
                             name="year_end" 
                             id="year_end"
+                            data-testid="year-end-input"
                             value = {
                                 this.state.year_end
                             } 
@@ -185,7 +193,7 @@ class Search extends Component {
                                 this.onHandleYearChange
                             }
                             />
-                            <span style={{ color: "red" }}>{this.state.errors["year_end"]}</span>
+                            <span style={{ color: "red" }} data-testid="year-end-error-msg">{this.state.errors["year_end"]}</span>
                         </div>
                     </form>
                     <button type="submit" form="search-form" value="Submit">Seach</button>
