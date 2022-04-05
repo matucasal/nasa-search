@@ -1,8 +1,8 @@
 # How to deploy it
 
-- After the git pull, you should install the packages with ´npm install´
-- To run the app you should run ´npm start´ -> This should deploy a localhost:3000 with the app
-- To run the tests you should run ´npm test´
+- After the git pull, you should install the packages with ```npm install```
+- To run the app you should run ```npm start``` -> This should deploy a localhost:3000 with the app
+- To run the tests you should run ```npm test```
 
 
 
