@@ -112,8 +112,7 @@ class Search extends Component {
                 errors['query_seach'] = "The query cannot be empty";      
                 return { errors };
             })
-            //console.log('this.state.errors["query_seach"]',this.state.errors["query_seach"])
-            //this.setState({ errors: this.state.errors });
+            
             validation = false
         }
         //2) Validate the year end not < than year start
@@ -124,8 +123,7 @@ class Search extends Component {
                 errors['year_start'] = "Wrong years";      
                 return { errors };
             })
-            //console.log('this.state.errors["query_seach"]',this.state.errors["query_seach"])
-            //this.setState({ errors: this.state.errors });
+            
             validation = false
         }
         
@@ -139,11 +137,7 @@ class Search extends Component {
                 errors['year_start'] = '';      
                 return { errors };
             })
-            /*this.state.errors['query_seach'] = '';
-            this.state.errors['year_start'] = '';
-            this.state.errors['year_end'] = '';
-
-            this.setState({ errors: this.state.errors });*/
+            
             let params =
             {
                 q:this.state.query_seach, 

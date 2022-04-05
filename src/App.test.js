@@ -19,13 +19,11 @@ What to test ->
     0) Must render
     1) Render the right screen
     2) Inputs -> Form Validation
-    3) test the events of the form
-    4) Search input try to search
-    5) Test the props recieved by the search in the results page
-    6) Test the states of the results page
-    7) Test loading in the results page
-    8) Select an item try to enter the show page
-    9) Array manipulation for images in the show page
+    3) Test the props recieved by the search in the results page
+    4) Test the states of the results page
+    5) Test loading in the results page
+    6) Select an item try to enter the show page
+    7) Array manipulation for images in the show page
 */
 
 
@@ -59,6 +57,9 @@ jest.mock('react-router-dom', () => ({
 
 
 //2) Inputs -> Form Validation
+//3) Test the props recieved by the search in the results page
+//4) Test the states of the results page
+//5) Test loading in the results page
 describe("Testing Search", () => {
  
     test('search input exists and correct type', () => {
@@ -82,17 +83,45 @@ describe("Testing Search", () => {
         expect(inputEl).toHaveAttribute("type", "text");
     });
 
-    test('year start input to be ok', () => {
-        render(<App />);
+    test('year start should fails if date > today()', () => {
+        render(<Search />);
+     
+        const inputElYearStart = screen.getByTestId("year-start-input");
+        userEvent.type(inputElYearStart, "2050");
+     
+        expect(screen.getByTestId("year-start-input")).toHaveValue("2050");
+        expect(screen.queryByTestId("year-start-error-msg")).toBeInTheDocument();
+    });
+
+    test('year start should be ok date < today()', () => {
+        render(<Search />);
      
         const inputElYearStart = screen.getByTestId("year-start-input");
         userEvent.type(inputElYearStart, "2020");
-
-        const inputElYearEnd = screen.getByTestId("year-end-input");
-        userEvent.type(inputElYearEnd, "2019");
      
         expect(screen.getByTestId("year-start-input")).toHaveValue("2020");
         expect(screen.queryByTestId("year-start-error-msg")).not.toBeInTheDocument();
     });
+
+    test ('submit is not ok when query is null', () => {
+        render(<Search />);
+     
+        const button = screen.getByRole('button')
+        fireEvent.click(button)
+        expect(screen.queryByTestId("query-search-error-msg")).toBeInTheDocument();
+    })
+
+    test ('submit is ok when query is not null', () => {
+        render(<Search />);
+     
+        const inputSearchQuery = screen.getByTestId("search-input");
+        userEvent.type(inputSearchQuery, 'moon');
+
+        const button = screen.getByRole('button')
+        fireEvent.click(button)
+        expect(screen.queryByTestId("query-search-error-msg")).not.toBeInTheDocument();
+    })
+
+    test ('The props in the results page are recieved correctly when submit search', () => {})
 
 })
