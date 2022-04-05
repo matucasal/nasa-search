@@ -8,12 +8,13 @@ class ShowPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            nasa_id: [],
+            nasa_id: '',
             name:'',
             description:'',
-            keywords:'',
-            data:'',
+            keywords:[],
+            images_json:'',
             image:''
+            
         }
     }
 
@@ -37,13 +38,17 @@ class ShowPage extends Component {
 
         if (searchParams){
             let nasa_id = searchParams.get('nasa_id')
+            this.getCollection(nasa_id);
             this.setState({ nasa_id: nasa_id});
         }
         
 
     }
 
-    showCollection(nasa_id){
+    getCollection(nasa_id){
+        
+        let me = this;
+
         let params = 
         {
             nasa_id: nasa_id, 
@@ -51,15 +56,55 @@ class ShowPage extends Component {
 
         axios.get('https://images-api.nasa.gov/search', {params: params})
             .then(res => {
-                const results = res.data
-                this.setState({ results: results, showLoading: false});
+                const result = res.data
+                if (result){
+                    let images_json = result.collection.items[0].href
+                    let name = result.collection.items[0].data[0].title
+                    let description = result.collection.items[0].data[0].description
+                    let keywords = result.collection.items[0].data[0].keywords
+
+                    me.getImageFromJson(images_json)
+                    this.setState({ name: name, description:description, keywords: keywords});
+                }
+
+                
         })
     }
+
+    getKeywords(keywords) {
+        if (keywords){
+            return (<ul>
+                {keywords.map((object, i) => 
+                    <li key={i}>
+                    {object}
+                    </li>)
+                }
+            </ul>)
+        }
+        else {
+            return ("There are no keywords")
+        }
+    }
+
+    getImageFromJson(images_json) {
+        let me = this;
+        if (images_json){
+            console.log('images_json', images_json)
+            axios.get(images_json)
+            .then(res => {
+                const result = res.data
+                var i = result.findIndex(v => v.includes("large") || v.includes("medium") || v.includes("orig"));
+                let item = result[i]
+                me.setState({ image: item});
+            })
+        }
+    }
+
+
 
     render() {
         return (
             <div className="show-page">
-                <h1>SHOW PAGE - {this.state.nasa_id}</h1>
                 <button
                 className="button icon-left"
                 onClick={() => this.props.navigate(-1) }>
@@ -67,31 +112,20 @@ class ShowPage extends Component {
                 </button>
                 
                 <div className="show-page-title">
-                    <h1>Title</h1>
+                    <h1>{this.state.name}</h1>
                 </div>
                 <hr className="rounded"></hr>
                 <div className="show-page-images">
-                    <img src="nasa_test_img.jpg"></img>
+                    <img src={this.state.image}></img>
                 </div>
                 <hr className="rounded"></hr>
                 <div className="show-page-description">
-                    <span>Lorem .orem ipsum dolor sit amet, consectetur adip. 
-                        Lorem ipsum dolor sit amet et, consectetur adipiscing elit.
-                        Lorem ipsum dolor sit amet et, consectetur adipiscing elit</span>
-                </div>
-                <hr className="rounded"></hr>
-                <div className="show-page-data">
-                    <span>201907_Apollo_50th_in_DC</span>
+                    <span>{this.state.description}</span>
                 </div>
                 <hr className="rounded"></hr>
                 <div className="show-page-keywords">
                     <h2>Keywords</h2>
-                    <ul>
-                        <li>Apollo 11</li>
-                        <li>Moons</li>
-                        <li>Test</li>
-                        <li>Test2</li>
-                    </ul>
+                    {this.getKeywords(this.state.keywords)}
                 </div>
                 
             </div>

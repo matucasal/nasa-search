@@ -35,14 +35,6 @@
             font-size: 1.5rem;
         }
     }
-    .show-page-data{
-        @include flex(space-between, center, row);
-        span{
-            margin-left: auto;
-            margin-right: auto;
-            font-size: 1.5rem;
-        }
-    }
     .show-page-keywords{
         @include flex(space-between, center, row);
         h2, ul{
