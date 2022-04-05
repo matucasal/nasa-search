@@ -10,11 +10,14 @@
         border-radius: 5px;
     }
     .show-page-title{
-        @include flex(space-between, center, row);
         h1{
             margin-left: auto;
             margin-right: auto;
             font-size: 2rem;
+        }
+        h3{
+            color: grey;
+            font-size: 1.5rem;
         }
     }
     .show-page-images{

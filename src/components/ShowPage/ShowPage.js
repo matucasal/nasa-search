@@ -12,8 +12,11 @@ class ShowPage extends Component {
             name:'',
             description:'',
             keywords:[],
+            photographer:'',
             images_json:'',
-            image:''
+            image:'',
+            date_created:'',
+            location:''
             
         }
     }
@@ -60,11 +63,15 @@ class ShowPage extends Component {
                 if (result){
                     let images_json = result.collection.items[0].href
                     let name = result.collection.items[0].data[0].title
+                    let photographer = result.collection.items[0].data[0].photographer
                     let description = result.collection.items[0].data[0].description
                     let keywords = result.collection.items[0].data[0].keywords
+                    let date_created = result.collection.items[0].data[0].date_created
+                    let location = result.collection.items[0].data[0].location
+                    
 
                     me.getImageFromJson(images_json)
-                    this.setState({ name: name, description:description, keywords: keywords});
+                    this.setState({ name: name, description:description, photographer: photographer, keywords: keywords, date_created: date_created, location:location});
                 }
 
                 
@@ -93,7 +100,8 @@ class ShowPage extends Component {
             axios.get(images_json)
             .then(res => {
                 const result = res.data
-                var i = result.findIndex(v => v.includes("large") || v.includes("medium") || v.includes("orig"));
+                //large medium or orig and NO tif
+                var i = result.findIndex(v => (v.includes("large") || v.includes("medium") || v.includes("orig")) && !v.includes("tif") );
                 let item = result[i]
                 me.setState({ image: item});
             })
@@ -113,6 +121,9 @@ class ShowPage extends Component {
                 
                 <div className="show-page-title">
                     <h1>{this.state.name}</h1>
+                    <h3>Photographer: {this.state.photographer}</h3>
+                    <h3>Date: {this.state.date_created}</h3>
+                    <h3>Location: {this.state.location}</h3>
                 </div>
                 <hr className="rounded"></hr>
                 <div className="show-page-images">

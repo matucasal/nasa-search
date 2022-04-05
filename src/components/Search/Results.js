@@ -127,7 +127,7 @@ class Results extends Component {
         else {
             return (
             <div className="search-results">
-                There is no results to show.
+                There are no results to show.
                 { this.state.showLoading ? 
                     <Spinner animation="border" role="status">
                     </Spinner> 
