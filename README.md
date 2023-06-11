@@ -7,6 +7,9 @@
 - To run the tests you should run ```npm test```
 
 
+- Using NPM Version -> 6.14.13
+- Using NODE Version -> v14.17.3
+
 
 NASA has revealed a public API for the image collection. We would like to explore the content
 using the client side application.
